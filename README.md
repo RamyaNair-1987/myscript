@@ -1,0 +1,2 @@
+# myscript
+contains git scripts
