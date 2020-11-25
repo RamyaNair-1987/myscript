@@ -47,9 +47,12 @@ case "${currentbranch}" in
    feature=feature_
    echo -e '\033[0;32mchecking whether the name already has feature embedded in it\033[0m'
    if [[ "$branchname" == *"$feature"* ]]; then
-      #echo " feature_ is already there in your branch name."
-      featurebranchname=$branchname
-      echo "New Branch = ${bold} ${featurebranchname} ${normal}"
+      	echo " feature_ is already there in your branch name."
+      	featurename=$(echo "$branchname" | sed 's/feature\_*//')
+	echo $featurename
+	featurebranchname= printf "feature_%s" $featurename
+	echo $featurebranchname
+      	echo "New Branch = ${bold} ${featurebranchname} ${normal}"
    
    else
      featurebranchname=feature_$branchname
