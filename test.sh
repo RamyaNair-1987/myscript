@@ -37,6 +37,7 @@ echo "Repository Name = ${bold} ${RepositoryName} ${normal}"
 
 echo -e '\033[0;31mNote : Rule1 : If you are in master branch then only you would be allowed to create  checkouts for hotfixes\033[0m'
 echo -e '\033[0;31mNote : Rule2 : If you are in develop branch then only you would be allowed to create  checkouts for features\033[0m'
+echo -e '\033[0;31mNote : Only add feature name (intended functionality) dont add feature word When creating branch from develop branch\033[0m'
 
 case "${currentbranch}" in
 
@@ -45,14 +46,17 @@ case "${currentbranch}" in
    echo -e '\033[0;31mNote : Give a meaningful name for your feature\033[0m'
    read -p "new branch": branchname
    feature=feature_
+   echo $feature
    echo -e '\033[0;32mchecking whether the name already has feature embedded in it\033[0m'
    if [[ "$branchname" == *"$feature"* ]]; then
       	echo " feature_ is already there in your branch name."
-      	featurename=$(echo "$branchname" | sed 's/feature\_*//')
+      	featurename=$(echo "$branchname" | sed 's/feature\_*//g')
 	echo $featurename
-	featurebranchname= printf "feature_%s" $featurename
+        featurebranchname=feature_$featurename
+	#featurebranchname= printf "feature_%s" $featurename
 	echo $featurebranchname
-      	echo "New Branch = ${bold} ${featurebranchname} ${normal}"
+	echo $featurebranchname
+      	echo "New Branch = ${bold} $featurebranchname ${normal}"
    
    else
      featurebranchname=feature_$branchname
@@ -79,7 +83,9 @@ case "${currentbranch}" in
       echo -e '\033[0;32mchecking whether the name already has hotfix embedded in it\033[0m'
    if [[ "$branchname" == *"$hotfix"* ]]; then
       #echo " hotfix_ is already there in your branch name."
-      Hotfixbranchname=$branchname
+      Hotfixname=$(echoo "$branchname" | sed 's/hotfix\_*//g')
+      Hotfixbranchname=hotfix_$Hotfixname
+      echo $Hotfixbranchname
       echo "New Branch = ${bold} ${Hotfixbranchname} ${normal}"
    
    else
