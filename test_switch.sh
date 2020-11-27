@@ -122,9 +122,47 @@ case "${option}" in
    			echo -e '\033[1;32m' "Good Bye!" '\033[0m'
 		fi
 	fi
- ;; 
-
+  ;; 
+  2)
+   	printf "%s\n"  "you opted for pull request"
+   	from_branch=$(git branch | grep ^* | sed 's/*//')
+	echo $from_branch
+	echo $from_branch
+   	if [[ "$from_branch" =~ feature ]]; then
+    		to_branch=develop
+		echo $to_branch
+    	else
+        
+   		if [[ "$from_branch" =~ hotfix* ]]; then
+			to_branch=master
+			echo $to_branch
+   		else
+			if [[ "$from_branch" != feature ]]; then
+				echo "you cannot raise a pull request as you are not in feature or hotfix branch"
+        			exit 1;
+			fi
+    		fi
+	fi
+  
+  	upstream=$(git config --get remote.upstream.url)
+  	origin=$(git config --get remote.origin.url)
+  	if [[ -z $upstream ]]; then
+    		upstream=$origin
+  	fi
+  	to_user=$(echo $upstream | sed -e 's/.*[\/:]\([^/]*\)\/[^/]*$/\1/')
+	from_user=$(echo $origin | sed -e 's/.*[\/:]\([^/]*\)\/[^/]*$/\1/')
+  	repo=$(basename `git rev-parse --show-toplevel`)
+	echo $from_branch
+ 	echo $to_branch
+	echo $repo
+	echo $to_user
+	echo $from_user
+	git push
+	open "https://github.com/$to_user/$repo/pull/new/$to_user:$to_branch...$from_user:$from_branch"
+ ;;
+ 3)
+	printf "%s\n"  "you opted for Exit"
+ 	exit 1;
+ ;;
 
 esac
-
-
