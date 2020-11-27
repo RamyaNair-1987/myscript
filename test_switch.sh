@@ -126,8 +126,9 @@ case "${option}" in
   2)
    	printf "%s\n"  "you opted for pull request"
    	from_branch=$(git branch | grep ^* | sed 's/*//')
-	echo $from_branch
-	echo $from_branch
+        frombranch=$(echo "$from_branch" | sed 's/ //g')
+	echo $frombranch
+	echo $frombranch
    	if [[ "$from_branch" =~ feature ]]; then
     		to_branch=develop
 		echo $to_branch
@@ -158,7 +159,7 @@ case "${option}" in
 	echo $to_user
 	echo $from_user
 	git push
-	open "https://github.com/$to_user/$repo/pull/new/$to_user:$to_branch...$from_user:$from_branch"
+	open "https://github.com/$to_user/$repo/compare/$to_user:$to_branch...$from_user:$frombranch"
  ;;
  3)
 	printf "%s\n"  "you opted for Exit"
