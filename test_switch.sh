@@ -45,90 +45,83 @@ echo -e '\033[0;31mNote : Only add feature name (intended functionality) dont ad
 
 echo -e '\033[0;31mplease enter your option\033[0m'
 echo -e '\033[0;31m1 : branch checkout\n2 : Pull request\n3 : Quit\033[0m'
-case "${currentbranch}" in
-
- develop)
-   echo -e "Checkout a new feature branch from develop branch: only from develop branch it is allowed"
-   echo -e '\033[0;31mNote : Give a meaningful name for your feature\033[0m'
-   read -p "new branch": branchname
-   feature=feature_
-   echo $feature
-   echo -e '\033[0;32mchecking whether the name already has feature embedded in it\033[0m'
-   if [[ "$branchname" == *"$feature"* ]]; then
-      	echo " feature_ is already there in your branch name."
-      	featurename=$(echo "$branchname" | sed 's/feature\_*//g')
-	echo $featurename
-        featurebranchname=feature_$featurename
-	#featurebranchname= printf "feature_%s" $featurename
-	echo $featurebranchname
-	echo $featurebranchname
-      	echo "New Branch = ${bold} $featurebranchname ${normal}"
-   
-   else
-     featurebranchname=feature_$branchname
-     echo "New Branch = ${bold} ${featurebranchname} ${normal}"
-   
-   fi
-   echo "${bold}Is this ${featurebranchname} good to create? ${normal}"
-   read -p "enter 'Yes|Y|y|yes'"  -n 1 -r 
-   if [[  $REPLY =~ ^[Yy]$ ]]; then 
-      git checkout -b $featurebranchname $currentbranch
-      if [ $? -eq 0 ]; then
-         echo -e "The branch is now available to you", '\033[1;35m Happy Coding!\033[0m'
-         echo OK
-      else
-         echo FAIL
-         exit 1;
-      fi
-
-   else
-     echo -e '\033[1;32m' "Good Bye!" '\033[0m'
-     exit 1;
-   fi 
-
- ;;
-
- master)
-    echo -e " hotfix branch from master : Only from master it is allowed"
-    echo -e '\033[0;31mNote : Give name so that it say what the hotfix is about\033[0m'
-    read -p "Hot Fix branch": branchname
-      hotfix=hotfix_
-      echo -e '\033[0;32mchecking whether the name already has hotfix embedded in it\033[0m'
-   if [[ "$branchname" == *"$hotfix"* ]]; then
-      #echo " hotfix_ is already there in your branch name."
-      Hotfixname=$(echo "$branchname" | sed 's/hotfix\_*//g')
-      Hotfixbranchname=hotfix_$Hotfixname
-      echo $Hotfixbranchname
-      echo "New Branch = ${bold} ${Hotfixbranchname} ${normal}"
-   
-   else
-     Hotfixbranchname=hotfix_$branchname
-     echo "New Branch = ${bold} ${Hotfixbranchname} ${normal}"
-   
-   fi
-   echo "${bold}Is this ${Hotfixbranchname} good to create? ${normal}"
-   read -p "enter 'Yes|Y|y|yes'"  -n 1 -r
-   if [[  $REPLY =~ ^[Yy]$ ]]; then
-      git checkout -b $Hotfixbranchname $currentbranch
-      if [ $? -eq 0 ]; then
-         echo -e "The branch is now available to you", '\033[1;35m Happy Coding!\033[0m'
-         echo OK
-      else
-         echo FAIL
-         exit 1;
-      fi
-
-      echo -e "The branch is now available to you", '\033[1;35m Happy Coding!\033[0m'
-   else
-     echo -e '\033[1;32m' "Good Bye!" '\033[0m'
-     exit 1;
-   fi         
-
- ;;
-
- *)
-   echo -e '\033[1;31m'"Your current branch doesn't qualify for checkout. Only allowed branches to checkout from is develop and master"'\033[0m'
-   echo -e '\033[1;32m' "Good Bye!" '\033[0m'
+read -p "Enter your option": option
+case "${option}" in
+  1)
+	if [[ "$currentbranch" == "develop" ]]; then
+   		echo -e "Checkout a new feature branch from develop branch: only from develop branch it is allowed"
+   		echo -e '\033[0;31mNote : Give a meaningful name for your feature\033[0m'
+   		read -p "new branch": branchname
+   		feature=feature_
+   		echo $feature
+   		echo -e '\033[0;32mchecking whether the name already has feature embedded in it\033[0m'
+   		if [[ "$branchname" == *"$feature"* ]]; then
+      			echo " feature_ is already there in your branch name."
+      			featurename=$(echo "$branchname" | sed 's/feature\_*//g')
+			echo $featurename
+        		featurebranchname=feature_$featurename
+			#featurebranchname= printf "feature_%s" $featurename
+			echo $featurebranchname
+			echo $featurebranchname
+      			echo "New Branch = ${bold} $featurebranchname ${normal}"
+   		else
+     			featurebranchname=feature_$branchname
+     			echo "New Branch = ${bold} ${featurebranchname} ${normal}"
+   		fi
+  		echo "${bold}Is this ${featurebranchname} good to create? ${normal}"
+   		read -p "enter 'Yes|Y|y|yes'"  -n 1 -r 
+   		if [[  $REPLY =~ ^[Yy]$ ]]; then 
+      			git checkout -b $featurebranchname $currentbranch
+      			if [ $? -eq 0 ]; then
+         			echo -e "The branch is now available to you", '\033[1;35m Happy Coding!\033[0m'
+         			echo OK
+      			else
+         			echo FAIL
+         			exit 1;
+      			fi
+   		else
+     			echo -e '\033[1;32m' "Good Bye!" '\033[0m'
+     			exit 1;
+   		fi 
+	fi
+	if [[ "$currentbranch" == "master" ]]; then
+    		echo -e " hotfix branch from master : Only from master it is allowed"
+    		echo -e '\033[0;31mNote : Give name so that it say what the hotfix is about\033[0m'
+    		read -p "Hot Fix branch": branchname
+      		hotfix=hotfix_
+      		echo -e '\033[0;32mchecking whether the name already has hotfix embedded in it\033[0m'
+   		if [[ "$branchname" == *"$hotfix"* ]]; then
+      			#echo " hotfix_ is already there in your branch name."
+      			Hotfixname=$(echo "$branchname" | sed 's/hotfix\_*//g')
+      			Hotfixbranchname=hotfix_$Hotfixname
+      			echo $Hotfixbranchname
+      			echo "New Branch = ${bold} ${Hotfixbranchname} ${normal}"
+   		else
+     			Hotfixbranchname=hotfix_$branchname
+     			echo "New Branch = ${bold} ${Hotfixbranchname} ${normal}"
+   		fi
+   		echo "${bold}Is this ${Hotfixbranchname} good to create? ${normal}"
+   		read -p "enter 'Yes|Y|y|yes'"  -n 1 -r
+   		if [[  $REPLY =~ ^[Yy]$ ]]; then
+      			git checkout -b $Hotfixbranchname $currentbranch
+      			if [ $? -eq 0 ]; then
+         			echo -e "The branch is now available to you", '\033[1;35m Happy Coding!\033[0m'
+         			echo OK
+      			else
+         			echo FAIL
+         			exit 1;
+      			fi
+      			echo -e "The branch is now available to you", '\033[1;35m Happy Coding!\033[0m'
+   		else
+     			echo -e '\033[1;32m' "Good Bye!" '\033[0m'
+     			exit 1;
+   		fi         
+	else
+		if [[ "$currentbranch" != "develop" ]]; then
+   			echo -e '\033[1;31m'"Your current branch doesn't qualify for checkout. Only allowed branches to checkout from is develop and master"'\033[0m'
+   			echo -e '\033[1;32m' "Good Bye!" '\033[0m'
+		fi
+	fi
  ;; 
 
 
